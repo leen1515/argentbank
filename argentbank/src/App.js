@@ -13,8 +13,17 @@ const GlobalStyle = createGlobalStyle`
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  margin: 0;
+  padding:0;
 }  
+body{
+margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;}
 `;
+
+
 
 function App() {
   return (

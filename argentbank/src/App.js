@@ -1,12 +1,28 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import PrivateRoute from "./routes/PrivateRoute";
-import Dashboard from "./pages/Dashboard";
+import LandingPage from "./pages/LandingPage";
+import { createGlobalStyle } from "styled-components";
+import { Routes, Route } from 'react-router';
+// import PrivateRoute from "./routes/PrivateRoute";
+// import Dashboard from "./pages/Dashboard";
+
+const GlobalStyle = createGlobalStyle`
+  html {
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}  
+`;
+
 function App() {
   return (
-    <>
+    <> <GlobalStyle />
     <Header />
-    <PrivateRoute path="/dashboard" component={Dashboard} />
+     <Routes>
+      <Route path="/" element={<LandingPage/>} />
+    </Routes>
     <Footer />
     </>
     

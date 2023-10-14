@@ -1,10 +1,9 @@
 import Header from "./components/Header";
 import FooterComponents from "./components/Footer";
-import LandingPage from "./pages/LandingPage";
 import { createGlobalStyle } from "styled-components";
-import { Routes, Route } from 'react-router';
-// import PrivateRoute from "./routes/PrivateRoute";
-// import Dashboard from "./pages/Dashboard";
+import SetRoutes from "./routes/SetRoutes";
+import { Provider } from 'react-redux';
+import store from './store/store'; 
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -20,19 +19,24 @@ body{
 margin: 0;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   min-height: 100vh;}
+  
+#root{
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 `;
 
 
 
 function App() {
   return (
-    <> <GlobalStyle />
+    <> <GlobalStyle /><Provider store={store}>
     <Header />
-     <Routes>
-      <Route path="/" element={<LandingPage/>} />
-    </Routes>
-    <FooterComponents />
+    <SetRoutes/>
+    <FooterComponents /></Provider>
     </>
     
 );

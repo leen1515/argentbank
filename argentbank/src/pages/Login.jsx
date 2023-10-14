@@ -4,6 +4,7 @@ import api from '../services/apiService';
 import { useDispatch } from 'react-redux';
 import { loginSuccess, loginFailure } from '../ReduxFunctions/userActions';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Main = styled(MainStyle)`
     height: 50%;
@@ -57,13 +58,12 @@ const RememberMeWrapper = styled.div`
     display: flex;
     margin-bottom: 1rem;
 `;
-
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    
     const dispatch = useDispatch();
     
+    const navigate = useNavigate();
     const handleSubmit = async (event) => {
         event.preventDefault();
     
@@ -71,20 +71,24 @@ function Login() {
             const response = await api.post('/login', { email, password });
     
             console.log('API Response:', response.data); 
-                if (response.data.status === 200) {
+            if (response.data.status === 200) {
                 dispatch(loginSuccess(response.data.body)); 
                 
                 console.log('Login success:', response.data.body);
+                
+                navigate('/dashboard');
             } else {
-                console.error('Login failed with status:', response.data.status);
+                const errorMessage = `Login failed with status: ${response.data.status}`;
+                console.error(errorMessage);
+                dispatch(loginFailure(errorMessage));
             }
             
         } catch (error) {
-            console.error('Login error:', error);
-            dispatch(loginFailure(error));
+            const errorMessage = `Login error: ${error.message || error}`;
+            console.error(errorMessage);
+            dispatch(loginFailure(errorMessage));
         }
     };
-    
     
     return (
         <Main>

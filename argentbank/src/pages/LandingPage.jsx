@@ -5,12 +5,16 @@ import moneyIcon from '../img/icon-money.png';
 import securityIcon from '../img/icon-security.png';
 
 
-const Main = styled.main`
-  flex: 1;
-`;
+import { MainStyle } from '../style/Global';
+
+const Main = styled(MainStyle)`
+  background-color: #ffffff;
+  padding: 0rem;
+  width:100%;
+`
 
 const Hero = styled.div`
-  background-image: url(${props => props.bgImage});
+  background-image: url(${props => props.$bgImage});
   background-position: 0 -50px;
   background-size: cover;
   background-repeat: no-repeat;
@@ -91,7 +95,7 @@ const FeatureItemTitle = styled.h3`
 
 function LandingPage (){
   return <Main>
-      <Hero bgImage={bankTree}>
+      <Hero $bgImage={bankTree}>
     <HeroContent>
       <h2 className="sr-only">Promoted Content</h2>
       <Subtitle>No fees.</Subtitle>

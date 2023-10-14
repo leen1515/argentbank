@@ -3,9 +3,8 @@ import styled from 'styled-components';
 import argentBankLogo from '../img/argentBankLogo.png';
 import userCircleIcon from '../icones/user-circle.svg';
 import { Link } from 'react-router-dom';
- 
 
-  const MainNav = styled.div`
+const MainNav = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,10 +16,6 @@ const NavItem = styled(Link)`
   color: #2c3e50;
   text-decoration: none;
   margin-right: 0.5rem;
-
-  &.router-link-exact-active {
-    color: #42b983;
-  }
 
   &:hover {
     text-decoration: underline;
@@ -40,20 +35,24 @@ const LogoImage = styled.img`
 const UserIcon = styled.img`
 `;
 
+const SignIn = styled(NavItem)`
+  display: flex;
+  align-items: center;
+`;
+
 function Header() {
   return (
     <MainNav>
       <NavLogo>
-        <NavItem to = "/">
+        <NavItem to="/">
           <LogoImage src={argentBankLogo} alt="Argent Bank Logo" />
-          {/* <h1>Argent Bank</h1> */}
         </NavItem>
       </NavLogo>
 
-      <NavItem>
+      <SignIn to="/login">
         <UserIcon src={userCircleIcon} alt="User Icon" />
-        <span>Sign In</span>
-      </NavItem>
+        Sign In
+      </SignIn>
     </MainNav>
   );
 }

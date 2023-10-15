@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Button, MainStyle, Title } from '../style/Global';
 import api from '../services/apiService';
 import { useDispatch } from 'react-redux';
-import { loginSuccess, loginFailure } from '../ReduxFunctions/userActions';
+import { loginSuccess, loginFailure, token } from '../ReduxFunctions/userActions';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -73,7 +73,8 @@ function Login() {
             console.log('API Response:', response.data); 
             if (response.data.status === 200) {
                 dispatch(loginSuccess(response.data.body)); 
-                
+                const tokenDisplay = dispatch(token(response.data.body.token))
+                console.log('Token:', tokenDisplay);
                 console.log('Login success:', response.data.body);
                 
                 navigate('/dashboard');

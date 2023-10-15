@@ -64,7 +64,7 @@ const AccountAmountDescription = styled.p`
 `;
 
 function Dashboard() {
-        const user = useSelector(state => state.auth.user);
+        const user = useSelector(state => state.authentification.user);
         
         useEffect(() => {
             if (user) {

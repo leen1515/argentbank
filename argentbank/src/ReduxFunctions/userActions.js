@@ -1,4 +1,4 @@
-import { LOGIN_FAILURE, LOGIN_SUCCESS } from "./actionTypes";
+import { LOGIN_FAILURE, LOGIN_SUCCESS, TOKEN } from "./actionTypes";
 export const loginSuccess = (user) => ({
     type: LOGIN_SUCCESS,
     payload: user,
@@ -9,3 +9,7 @@ export const loginFailure = (error) => ({
     payload: error.message,
 });
 
+export const token = (token) => ({
+    type: TOKEN,
+    payload: token,
+});

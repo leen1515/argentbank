@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-
-
+import { useEffect, useState } from 'react';
+import { useSelector} from 'react-redux';
+import axios from 'axios';
+import api from '../services/apiService';
 import { Button, MainStyle } from '../style/Global';
 
 const Main = styled(MainStyle)`
@@ -64,18 +64,41 @@ const AccountAmountDescription = styled.p`
 `;
 
 function Dashboard() {
-        const user = useSelector(state => state.authentification.user);
-        
-        useEffect(() => {
-            if (user) {
-                console.log("Connected User Profile: ", user);
+    const [profile, setProfile] = useState(null);
+    
+    const token = useSelector(state => state.authentification.token);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                console.log("Token: ", token);
+
+                const headers = {
+                    Authorization: `Bearer ${token}`
+                };
+                
+                const response = await axios.post('http://localhost:3001/api/v1/user/profile', {}, { headers });
+                
+                console.log("Response: ", response.data);
+                
+                setProfile(response.data.body);
+                
+            } catch (error) {
+                console.error("There was an error fetching the profile!", error);
             }
-        }, [user]); 
+        };
+        
+        if (token) {
+            fetchProfile();
+        }
+        
+    }, [token]);
 
     return (
         <Main>
         <Header>
-            <Title>Welcome back<br />Tony Jarvis!</Title>
+        {(profile) 
+        &&<h1>Welcome, {profile.firstName}!</h1>}
             <EditButton>Edit Name</EditButton>
         </Header>
         {[1, 2, 3].map((account) => (

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Button, MainStyle, Title } from '../style/Global';
 import api from '../services/apiService';
 import { useDispatch } from 'react-redux';
-import { loginSuccess, loginFailure, token } from '../ReduxFunctions/userActions';
+import { loginSuccess, loginFailure, token, getAcounts } from '../ReduxFunctions/userActions';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -61,6 +61,7 @@ const RememberMeWrapper = styled.div`
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     const dispatch = useDispatch();
     
     const navigate = useNavigate();
@@ -76,7 +77,9 @@ function Login() {
                 const tokenDisplay = dispatch(token(response.data.body.token))
                 console.log('Token:', tokenDisplay);
                 console.log('Login success:', response.data.body);
-                
+                const user = dispatch({ type: "TOKEN_INFOS", payload: response.data.body.token });
+
+                console.log('User:', user);
                 navigate('/dashboard');
             } else {
                 const errorMessage = `Login failed with status: ${response.data.status}`;
@@ -88,7 +91,7 @@ function Login() {
             const errorMessage = `Login error: ${error.message || error}`;
             console.error(errorMessage);
             dispatch(loginFailure(errorMessage));
-        }
+        } 
     };
     
     return (

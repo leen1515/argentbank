@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { useSelector} from 'react-redux';
+import { useSelector, useDispatch} from 'react-redux';
 import axios from 'axios';
 import api from '../services/apiService';
 import { Button, MainStyle } from '../style/Global';
+import { getAccounts } from '../ReduxFunctions/userActions';
 
 const Main = styled(MainStyle)`
     flex: 1;
@@ -64,25 +65,21 @@ const AccountAmountDescription = styled.p`
 `;
 
 function Dashboard() {
-    const [profile, setProfile] = useState(null);
-    
-    const token = useSelector(state => state.authentification.token);
-
+    const dispatch = useDispatch();
+    const token = useSelector(state => state.authentification.tokenInfos);
+    const profile = useSelector(state => state.authentification.accounts);
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                console.log("Token: ", token);
-
                 const headers = {
                     Authorization: `Bearer ${token}`
                 };
-                
                 const response = await axios.post('http://localhost:3001/api/v1/user/profile', {}, { headers });
-                
-                console.log("Response: ", response.data);
-                
-                setProfile(response.data.body);
-                
+                const getProfileDatas = response.data.body;
+                console.log("getProfileDatas", getProfileDatas);
+                dispatch(getAccounts({
+                    firstName: getProfileDatas.firstName, lastName: getProfileDatas.lastName, email: getProfileDatas.email, accounts: getProfileDatas.accounts
+                }))
             } catch (error) {
                 console.error("There was an error fetching the profile!", error);
             }
@@ -98,7 +95,7 @@ function Dashboard() {
         <Main>
         <Header>
         {(profile) 
-        &&<h1>Welcome, {profile.firstName}!</h1>}
+        &&<h1>Welcome, {profile?.firstName}!</h1>}
             <EditButton>Edit Name</EditButton>
         </Header>
         {[1, 2, 3].map((account) => (

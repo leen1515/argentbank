@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 function PrivateRoute({ children }) {
     const user = useSelector(state => state.authentification.user); 
-    const token = useSelector((state) => state.authentification.token);
+    const token = useSelector((state) => state.authentification.tokenInfos);
 
     const isTokenValid = token ? true : false;
 

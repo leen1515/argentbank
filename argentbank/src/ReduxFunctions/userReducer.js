@@ -1,11 +1,9 @@
-import { LOGIN_SUCCESS, LOGIN_FAILURE, TOKEN, TOKEN_INFOS, GET_ACCOUNTS } from './actionTypes';
-import jwt_decode from 'jwt-decode';
+import { LOGIN_SUCCESS, LOGIN_FAILURE, TOKEN_INFOS, GET_ACCOUNTS } from './actionTypes';
 
 
 const initialState = {
     user: null,
     error: null,
-    token: null,
     tokenInfos: null,
     accounts: null,
 };
@@ -16,12 +14,8 @@ export const authReducer = (state = initialState, action) => {
             return { ...state, user: action.payload, error: null };
         case LOGIN_FAILURE:
             return { ...state, user: null, error: action.payload };
-        case TOKEN:
-            return { ...state, token: action.payload };
         case TOKEN_INFOS: 
-            const jwtInfo = jwt_decode(action.payload);
-            console.log("Decoded Token:", jwtInfo);
-            return { ...state, tokenInfos: jwtInfo };
+            return { ...state, tokenInfos: action.payload };
         case GET_ACCOUNTS:
             return { ...state, accounts: action.payload };
 

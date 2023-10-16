@@ -2,12 +2,12 @@ import styled from 'styled-components';
 import { Button, MainStyle, Title } from '../style/Global';
 import api from '../services/apiService';
 import { useDispatch } from 'react-redux';
-import { loginSuccess, loginFailure, tokenInfos, getAcounts } from '../ReduxFunctions/userActions';
+import { loginSuccess, loginFailure } from '../ReduxFunctions/userActions';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Main = styled(MainStyle)`
-    height: 50%;
+    height: 70vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,6 +27,7 @@ const Section = styled.section`
     background-color: white;
     width: 300px;
     padding: 2rem;
+    height: 100%;
     text-align: center;
 `;
 

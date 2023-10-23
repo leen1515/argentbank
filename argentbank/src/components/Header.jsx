@@ -16,6 +16,10 @@ const MainNav = styled.div`
 `;
 
 const NavItem = styled(Link)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
   font-weight: bold;
   color: #2c3e50;
   text-decoration: none;

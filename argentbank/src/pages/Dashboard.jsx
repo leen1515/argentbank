@@ -12,17 +12,46 @@ const Main = styled(MainStyle)`
     flex: 1;
 `;
 const EditButton = styled(Button)`
+width: 200px;
 `;
 
+const EditMode = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+`;
 
+const FieldWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    & > input {
+        width: 200px;
+        height: 30px;
+        margin: 2px 0px;
+        padding: 5px;
+        font-size: 1.2rem;
+    }
+`;
 
 const Header = styled.div`
     color: #fff;
     margin-bottom: 2rem;
 `;
 
-
-
+const ButtonEditRight = styled(Button)`
+    width: 70px;
+    margin-top: 1rem;
+    margin-right :140px;
+`;
+const ButtonEditLeft = styled(Button)`
+    width: 70px;
+    margin-top: 1rem;
+    margin-left: 140px;
+`;
 function Dashboard() {
     const dispatch = useDispatch();
     const token = useSelector(state => state.authentification.tokenInfos);
@@ -67,24 +96,32 @@ function Dashboard() {
             <Header>
                 {(profile) && (
                     editMode ? (
-                        <>
+                    <EditMode>
+                        <FieldWrapper>
                             <input 
-                                value={tempFirstName}
+                                value={tempFirstName? tempFirstName : ""}
+                                placeholder={profile.firstName}
                                 onChange={(e) => setTempFirstName(e.target.value)}
                             />
-                            <input 
-                                value={tempLastName}
+                            <ButtonEditLeft onClick={handleSaveClick}>Save</ButtonEditLeft>
+                            </FieldWrapper>
+                            <FieldWrapper><input 
+                                value={tempLastName? tempLastName : ""}
                                 onChange={(e) => setTempLastName(e.target.value)}
+                                placeholder={profile.lastName}
                             />
-                            <Button onClick={handleSaveClick}>Save</Button>
-                        </>
+                            <ButtonEditRight onClick={handleEditClick}>Cancel</ButtonEditRight>
+                            </FieldWrapper>
+                            </EditMode>
                     ) : (
-                        <h1>Welcome back<br/>{(tempFirstName? tempFirstName : profile.firstName) +" "+ (tempLastName? tempLastName:profile.lastName) }!</h1>
+                        <>
+                            <h1>Welcome back<br/>{(tempFirstName? tempFirstName : profile.firstName) +" "+ (tempLastName? tempLastName:profile.lastName) }!</h1>        
+                            <EditButton onClick={handleEditClick}>
+                            Edit Name
+                            </EditButton>
+                        </>
                     )
                 )}
-                <EditButton onClick={handleEditClick}>
-                    {editMode ? "Cancel" : "Edit Name"}
-                </EditButton>
             </Header>
         <Solde accountTitle = "Argent Bank Checking (x8349)" accountAmount = "$2,082.79" accountAmountDescription = "Available Balance"/>
         <Solde accountTitle = "Argent Bank Savings (x6712)" accountAmount = "$10,928.42" accountAmountDescription = "Available Balance"/>

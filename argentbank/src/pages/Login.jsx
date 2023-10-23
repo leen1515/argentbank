@@ -3,7 +3,7 @@ import { Button, MainStyle, Title } from '../style/Global';
 import api from '../services/apiService';
 import { useDispatch } from 'react-redux';
 import { loginSuccess, loginFailure } from '../ReduxFunctions/userActions';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Main = styled(MainStyle)`
@@ -63,13 +63,18 @@ const RememberMeWrapper = styled.div`
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
 
     const dispatch = useDispatch();
     
     const navigate = useNavigate();
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
+        if (rememberMe) {
+            localStorage.setItem('savedEmail', email); 
+        } else {
+            localStorage.removeItem('savedEmail'); 
+        }
         try {
             const response = await api.post('/login', { email, password });
             if (response.data.status === 200) {
@@ -87,7 +92,13 @@ function Login() {
             dispatch(loginFailure(errorMessage));
         } 
     };
-    
+     useEffect(() => {
+        const savedEmail = localStorage.getItem('savedEmail');
+        if (savedEmail) {
+            setEmail(savedEmail);
+            setRememberMe(true); 
+        }
+    }, []);
     return (
         <Main>
             <Section>
@@ -115,10 +126,14 @@ function Login() {
                         />
                     </InputWrapper>
                     <RememberMeWrapper>
-                        <Label htmlFor="remember-me">Remember me</Label>
-                        <Input type="checkbox" id="remember-me" />
-                    </RememberMeWrapper>
-                    <SignInButton type="submit">Login</SignInButton>
+                        <Input 
+                            type="checkbox" 
+                            id="remember-me" 
+                            checked={rememberMe} 
+                            onChange={(e) => setRememberMe(e.target.checked)} 
+                        /><Label htmlFor="remember-me">Remember me</Label>               
+                        </RememberMeWrapper>
+                    <SignInButton type="submit">Sign In</SignInButton>
                 </Form>
             </Section>
         </Main>

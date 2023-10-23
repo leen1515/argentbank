@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import argentBankLogo from '../img/argentBankLogo.png';
 import userCircleIcon from '../icones/user-circle.svg';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../ReduxFunctions/userActions';
+import { useSelector } from 'react-redux';
+import arrowRight from '../icones/arrow-right.svg';
 
 const MainNav = styled.div`
   display: flex;
@@ -34,6 +38,10 @@ const LogoImage = styled.img`
 
 const UserIcon = styled.img`
 `;
+const UserSignOut = styled.img`
+width:20px;
+height:20px;
+`;
 
 const SignIn = styled(NavItem)`
   display: flex;
@@ -41,6 +49,13 @@ const SignIn = styled(NavItem)`
 `;
 
 function Header() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.authentification.accounts);
+
+  const handleLogout = () => {
+    dispatch(logout());
+};
+
   return (
     <MainNav>
       <NavLogo>
@@ -49,10 +64,20 @@ function Header() {
         </NavItem>
       </NavLogo>
 
-      <SignIn to="/login">
-        <UserIcon src={userCircleIcon} alt="User Icon" />
-        Sign In
-      </SignIn>
+      {user ? (
+                <NavItem onClick={handleLogout}>
+                    <UserIcon src={userCircleIcon} alt="User Icon" />{
+                        user.firstName
+                    }
+                    <UserSignOut src={arrowRight} alt="Sign Out Icon" />
+                    Sign Out
+                </NavItem>
+            ) : (
+                <SignIn to="/login">
+                    <UserIcon src={userCircleIcon} alt="User Icon" />
+                    Sign In
+                </SignIn>
+            )}
     </MainNav>
   );
 }

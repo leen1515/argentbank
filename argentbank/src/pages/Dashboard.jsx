@@ -52,7 +52,7 @@ function Dashboard() {
         <Main>
         <Header>
         {(profile) 
-        &&<h1>Welcome, {profile?.firstName}!</h1>}
+        &&<h1>Welcome back<br/>{profile?.firstName +" "+ profile?.lastName}!</h1>}
             <EditButton>Edit Name</EditButton>
         </Header>
         <Solde accountTitle = "Argent Bank Checking (x8349)" accountAmount = "$2,082.79" accountAmountDescription = "Available Balance"/>

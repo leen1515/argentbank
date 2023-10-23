@@ -3,7 +3,7 @@ import bankTree from '../img/bank-tree.jpeg';
 import chatIcon from '../img/icon-chat.png';
 import moneyIcon from '../img/icon-money.png';
 import securityIcon from '../img/icon-security.png';
-
+import { SrOnly } from '../style/Global';
 
 import { MainStyle } from '../style/Global';
 
@@ -97,7 +97,7 @@ function LandingPage (){
   return <Main>
       <Hero $bgImage={bankTree}>
     <HeroContent>
-      <h2 className="sr-only">Promoted Content</h2>
+      <SrOnly as = 'h2'>Promoted Content</SrOnly>
       <Subtitle>No fees.</Subtitle>
       <Subtitle>No minimum deposit.</Subtitle>
       <Subtitle>High interest rates.</Subtitle>
@@ -106,7 +106,7 @@ function LandingPage (){
   </Hero>
 
   <Features>
-    <h2 className="sr-only">Features</h2>
+    <SrOnly as = 'h2'>Features</SrOnly>
     
     <FeatureItem>
       <FeatureIcon src={chatIcon} alt="Chat Icon" />

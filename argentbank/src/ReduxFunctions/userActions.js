@@ -17,3 +17,11 @@ export const getAccounts = (accounts) => ({
     type: GET_ACCOUNTS,
     payload: accounts,
 });
+
+export const LOGOUT = 'LOGOUT';
+
+export function logout() {
+    return {
+        type: LOGOUT,
+    };
+}

@@ -23,12 +23,12 @@ const LoginTitle = styled(Title)`
 `;
 
 const Section = styled.section`
-    box-sizing: border-box;
-    background-color: white;
-    width: 300px;
-    padding: 2rem;
-    height: 100%;
-    text-align: center;
+  box-sizing: border-box;
+  background-color: white;
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 3rem;
+  padding: 2rem;
 `;
 
 const Icon = styled.i`

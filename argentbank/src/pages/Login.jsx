@@ -6,6 +6,7 @@ import { loginSuccess, loginFailure } from '../ReduxFunctions/userActions';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../components/ModalError';
+import { isValidEmail, isValidPassword } from '../utils';
 
 const Main = styled(MainStyle)`
     height: 70vh;
@@ -73,6 +74,17 @@ function Login() {
     const navigate = useNavigate();
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!isValidEmail(email)) {
+            setErrorMessage("Invalid email address.");
+            setShowErrorModal(true);
+            return;
+        }
+        
+        if (!isValidPassword(password)) {
+            setErrorMessage("Password must be at least 3 characters long and contain at least one letter and one number.");
+            setShowErrorModal(true);
+            return;
+        }
         if (rememberMe) {
             localStorage.setItem('savedEmail', email); 
         } else {
@@ -105,6 +117,7 @@ function Login() {
                 setRememberMe(true); 
             }
         }, []);
+        
     return (
         <Main>
             <Section>

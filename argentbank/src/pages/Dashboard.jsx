@@ -7,6 +7,8 @@ import { getAccounts } from '../ReduxFunctions/userActions';
 import Solde from '../components/Solde';
 import { useState } from 'react';
 import { updateUserProfile } from '../services/updateProfil';
+import { isValidName } from '../utils';
+import Modal from '../components/ModalError';
 
 const Main = styled(MainStyle)`
     flex: 1;
@@ -82,12 +84,20 @@ function Dashboard() {
     const [editMode, setEditMode] = useState(false);
     const [tempFirstName, setTempFirstName] = useState(null);
     const [tempLastName, setTempLastName] = useState(null);
-    
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
     const handleEditClick = () => {
         setEditMode(!editMode);
     };
     
     const handleSaveClick = () => {
+        if (!isValidName(tempFirstName) || !isValidName(tempLastName)) {
+            const errMsg = "Invalid name. Names can only contain letters, spaces, hyphens, and apostrophes.";
+            setErrorMessage(errMsg);
+            setShowErrorModal(true);
+            return;
+        }
         dispatch(updateUserProfile(token, tempFirstName, tempLastName));
         setEditMode(false);
     };
@@ -127,6 +137,11 @@ function Dashboard() {
         <Solde accountTitle = "Argent Bank Checking (x8349)" accountAmount = "$2,082.79" accountAmountDescription = "Available Balance"/>
         <Solde accountTitle = "Argent Bank Savings (x6712)" accountAmount = "$10,928.42" accountAmountDescription = "Available Balance"/>
         <Solde accountTitle = "Argent Bank Credit Card (x8349)" accountAmount = "$184.30" accountAmountDescription = "Available Balance"/>
+        <Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
+                    <h2>Error</h2>
+                    <p>{errorMessage}</p>
+                    <Button onClick={() => setShowErrorModal(false)}>Close</Button>
+                </Modal>
         </Main>
     );
 }

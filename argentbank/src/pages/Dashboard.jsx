@@ -47,6 +47,7 @@ const ButtonEditRight = styled(Button)`
     margin-top: 1rem;
     margin-right :140px;
 `;
+
 const ButtonEditLeft = styled(Button)`
     width: 70px;
     margin-top: 1rem;

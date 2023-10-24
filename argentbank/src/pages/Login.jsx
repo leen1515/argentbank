@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { loginSuccess, loginFailure } from '../ReduxFunctions/userActions';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Modal from '../components/ModalError';
 
 const Main = styled(MainStyle)`
     height: 70vh;
@@ -23,12 +24,12 @@ const LoginTitle = styled(Title)`
 `;
 
 const Section = styled.section`
-  box-sizing: border-box;
-  background-color: white;
-  width: 300px;
-  margin: 0 auto;
-  margin-top: 3rem;
-  padding: 2rem;
+    box-sizing: border-box;
+    background-color: white;
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 3rem;
+    padding: 2rem;
 `;
 
 const Icon = styled.i`
@@ -64,6 +65,8 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const dispatch = useDispatch();
     
@@ -83,22 +86,25 @@ function Login() {
                 dispatch({ type: "TOKEN_INFOS", payload: tokenDisplay });
                 navigate('/dashboard');
             } else {
-                const errorMessage = `Login failed with status: ${response.data.status}`;
-                dispatch(loginFailure(errorMessage));
-            }
-            
+                const errMsg = `Login failed with status: ${response.data.status}`;
+                dispatch(loginFailure(errMsg));
+                setErrorMessage(errMsg);
+                setShowErrorModal(true);
+            }            
         } catch (error) {
-            const errorMessage = `Login error: ${error.message || error}`;
-            dispatch(loginFailure(errorMessage));
+            const errMsg = `Login error: ${error.message || error}`;
+            dispatch(loginFailure(errMsg));
+            setErrorMessage(errMsg);
+            setShowErrorModal(true);
         } 
     };
-     useEffect(() => {
-        const savedEmail = localStorage.getItem('savedEmail');
-        if (savedEmail) {
-            setEmail(savedEmail);
-            setRememberMe(true); 
-        }
-    }, []);
+        useEffect(() => {
+            const savedEmail = localStorage.getItem('savedEmail');
+            if (savedEmail) {
+                setEmail(savedEmail);
+                setRememberMe(true); 
+            }
+        }, []);
     return (
         <Main>
             <Section>
@@ -136,6 +142,11 @@ function Login() {
                     <SignInButton type="submit">Sign In</SignInButton>
                 </Form>
             </Section>
+                <Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
+                    <h2>Error</h2>
+                    <p>{errorMessage}</p>
+                    <Button onClick={() => setShowErrorModal(false)}>Close</Button>
+                </Modal>
         </Main>
     );
 }

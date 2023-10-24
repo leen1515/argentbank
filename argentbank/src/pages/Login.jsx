@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../components/ModalError';
 import { isValidEmail, isValidPassword } from '../utils';
+import Loader from '../components/Loader';
 
 const Main = styled(MainStyle)`
     height: 70vh;
@@ -68,12 +69,15 @@ function Login() {
     const [rememberMe, setRememberMe] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch();
     
     const navigate = useNavigate();
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoading(true);
+
         if (!isValidEmail(email)) {
             setErrorMessage("Invalid email address.");
             setShowErrorModal(true);
@@ -90,6 +94,7 @@ function Login() {
         } else {
             localStorage.removeItem('savedEmail'); 
         }
+
         try {
             const response = await api.post('/login', { email, password });
             if (response.data.status === 200) {
@@ -108,7 +113,9 @@ function Login() {
             dispatch(loginFailure(errMsg));
             setErrorMessage(errMsg);
             setShowErrorModal(true);
-        } 
+        } finally {
+        setLoading(false);
+        }
     };
         useEffect(() => {
             const savedEmail = localStorage.getItem('savedEmail');
@@ -117,9 +124,9 @@ function Login() {
                 setRememberMe(true); 
             }
         }, []);
-        
     return (
         <Main>
+            {loading && <Loader />}
             <Section>
                 <Icon className="fa fa-user-circle" />
                 <LoginTitle>Sign In</LoginTitle>

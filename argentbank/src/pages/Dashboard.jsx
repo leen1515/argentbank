@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { updateUserProfile } from '../services/updateProfil';
 import { isValidName } from '../utils';
 import Modal from '../components/ModalError';
+import Loader from '../components/Loader';
 
 const Main = styled(MainStyle)`
     flex: 1;
@@ -59,8 +60,16 @@ function Dashboard() {
     const dispatch = useDispatch();
     const token = useSelector(state => state.authentification.tokenInfos);
     const profile = useSelector(state => state.authentification.accounts);
+    const [editMode, setEditMode] = useState(false);
+    const [tempFirstName, setTempFirstName] = useState(null);
+    const [tempLastName, setTempLastName] = useState(null);
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         const fetchProfile = async () => {
+            setLoading(true);
             try {
                 const headers = {
                     Authorization: `Bearer ${token}`
@@ -73,6 +82,8 @@ function Dashboard() {
                 }))
             } catch (error) {
                 console.error("There was an error fetching the profile!", error);
+            } finally {
+                setLoading(false);
             }
         };
         
@@ -81,11 +92,6 @@ function Dashboard() {
         }
         
     }, [token]);
-    const [editMode, setEditMode] = useState(false);
-    const [tempFirstName, setTempFirstName] = useState(null);
-    const [tempLastName, setTempLastName] = useState(null);
-    const [showErrorModal, setShowErrorModal] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
     const handleEditClick = () => {
         setEditMode(!editMode);
@@ -104,6 +110,7 @@ function Dashboard() {
         
     return (
         <Main>
+            {loading && <Loader />}
             <Header>
                 {(profile) && (
                     editMode ? (

@@ -6,9 +6,7 @@ function PrivateRoute({ children }) {
     const user = useSelector(state => state.authentification.user); 
     const token = useSelector((state) => state.authentification.tokenInfos);
 
-    const isTokenValid = token ? true : false;
-
-    return isTokenValid && user
+    return token && user
     ?children : <Navigate to="/login" replace />;
 }
 

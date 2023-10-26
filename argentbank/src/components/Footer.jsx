@@ -8,7 +8,7 @@ const Footer = styled.footer`
   justify-content: center;
   border-top: 2px solid #ccc;
   padding: 2rem 0 1.5rem;
-  height:100px;
+  height:50px;
   bottom:0;
 `;
 

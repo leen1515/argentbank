@@ -24,10 +24,6 @@ const NavItem = styled(Link)`
   color: #2c3e50;
   text-decoration: none;
   margin-right: 0.5rem;
-
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 const NavLogo = styled.div`
@@ -51,7 +47,34 @@ const SignIn = styled(NavItem)`
   display: flex;
   align-items: center;
 `;
-
+const LinkDashboard = styled(NavItem)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+  color: #000000;
+  text-decoration: none;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+const SignOut = styled(NavItem)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+  color: #000000;
+  text-decoration: none;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 function Header() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authentification.accounts);
@@ -69,12 +92,15 @@ function Header() {
       </NavLogo>
 
       {user ? (
-                <NavItem onClick={handleLogout}>
+                <NavItem>
+                    <LinkDashboard to="/dashboard">
                     <UserIcon src={userCircleIcon} alt="User Icon" />{
                         user.firstName
                     }
+                    </LinkDashboard>
+                    <SignOut onClick={handleLogout}>
                     <UserSignOut src={arrowRight} alt="Sign Out Icon" />
-                    Sign Out
+                    Sign Out</SignOut>
                 </NavItem>
             ) : (
                 <SignIn to="/login">

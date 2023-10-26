@@ -13,7 +13,7 @@ const Main = styled(MainStyle)`
     height: 70vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 `;
 
 const SignInButton = styled(Button)`
@@ -51,7 +51,12 @@ const InputWrapper = styled.div`
 
 const Label = styled.label`
     font-weight: bold;
+   
 `;
+const RememberDiv = styled.div`
+        font-size: 1rem;
+        font-weight: 200;
+        `;
 
 const Input = styled.input`
     padding: 5px;
@@ -100,6 +105,7 @@ function Login() {
             if (response.data.status === 200) {
                 dispatch(loginSuccess(response.data.body)); 
                 const tokenDisplay = response.data.body.token;
+                console.log(response.data)
                 dispatch({ type: "TOKEN_INFOS", payload: tokenDisplay });
                 navigate('/dashboard');
             } else {
@@ -157,7 +163,7 @@ function Login() {
                             id="remember-me" 
                             checked={rememberMe} 
                             onChange={(e) => setRememberMe(e.target.checked)} 
-                        /><Label htmlFor="remember-me">Remember me</Label>               
+                        /><Label htmlFor="remember-me"><RememberDiv>Remember me</RememberDiv></Label>               
                         </RememberMeWrapper>
                     <SignInButton type="submit">Sign In</SignInButton>
                 </Form>

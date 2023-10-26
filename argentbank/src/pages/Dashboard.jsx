@@ -76,7 +76,7 @@ function Dashboard() {
                 };
                 const response = await api.post('/profile', {}, { headers });
                 const getProfileDatas = response.data.body;
-                console.log("getProfileDatas", getProfileDatas);
+                console.log("getProfileDatas", getProfileDatas, response);
                 dispatch(getAccounts({
                     firstName: getProfileDatas.firstName, lastName: getProfileDatas.lastName, email: getProfileDatas.email, accounts: getProfileDatas.accounts
                 }))

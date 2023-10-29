@@ -119,13 +119,14 @@ function Dashboard() {
                             <input 
                                 value={tempFirstName? tempFirstName : ""}
                                 placeholder={profile.firstName}
-                                onChange={(e) => e.target.value > 0? setTempFirstName(e.target.value): profile.firstName}
+                                onChange={(e) => setTempFirstName(e.target.value)}
+                            
                             />
                             <ButtonEditLeft onClick={handleSaveClick}>Save</ButtonEditLeft>
                             </FieldWrapper>
                             <FieldWrapper><input 
                                 value={tempLastName? tempLastName : ""}
-                                onChange={(e) => e.target.value > 0? setTempLastName(e.target.value): profile.lastName}
+                                onChange={(e) => setTempLastName(e.target.value)}
                                 placeholder={profile.lastName}
                             />
                             <ButtonEditRight onClick={handleEditClick}>Cancel</ButtonEditRight>

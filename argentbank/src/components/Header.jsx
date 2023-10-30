@@ -50,7 +50,9 @@ const SignIn = styled(NavItem)`
 const LinkDashboard = styled(NavItem)`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  right:0px;
+  width:80%;
+  justify-content: flex-end;
   gap: 0.5rem;
   font-weight: bold;
   color: #000000;
@@ -65,6 +67,8 @@ const SignOut = styled(NavItem)`
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex-wrap:nowrap;
+  white-space: nowrap;
   gap: 0.5rem;
   font-weight: bold;
   color: #000000;
@@ -75,6 +79,7 @@ const SignOut = styled(NavItem)`
     text-decoration: underline;
   }
 `;
+
 function Header() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authentification.accounts);
@@ -85,29 +90,32 @@ function Header() {
 
   return (
     <MainNav>
-      <NavLogo>
-        <NavItem to="/">
+        <NavLogo>
+      <Link to="/" style={{ textDecoration: 'none' }}>
           <LogoImage src={argentBankLogo} alt="Argent Bank Logo" />
-        </NavItem>
-      </NavLogo>
+      </Link>
+    </NavLogo>
 
-      {user ? (
-                <NavItem>
-                    <LinkDashboard to="/dashboard">
-                    <UserIcon src={userCircleIcon} alt="User Icon" />{
-                        user.firstName
-                    }
-                    </LinkDashboard>
-                    <SignOut onClick={handleLogout}>
-                    <UserSignOut src={arrowRight} alt="Sign Out Icon" />
-                    Sign Out</SignOut>
-                </NavItem>
-            ) : (
-                <SignIn to="/login">
-                    <UserIcon src={userCircleIcon} alt="User Icon" />
-                    Sign In
-                </SignIn>
-            )}
+
+        {user ? (
+      <>
+          <LinkDashboard to="/dashboard">
+              <UserIcon src={userCircleIcon} alt="User Icon" />
+              {user.firstName}
+          </LinkDashboard>
+          <SignOut onClick={handleLogout}>
+              <UserSignOut src={arrowRight} alt="Sign Out Icon" />
+              Sign Out
+          </SignOut>
+      </>
+  ) : (
+      <SignIn to="/login">
+          <UserIcon src={userCircleIcon} alt="User Icon" />
+          Sign In
+      </SignIn>
+  )
+  }
+
     </MainNav>
   );
 }

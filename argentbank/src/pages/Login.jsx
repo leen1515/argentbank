@@ -79,6 +79,9 @@ function Login() {
     const dispatch = useDispatch();
     
     const navigate = useNavigate();
+
+
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
@@ -108,6 +111,9 @@ function Login() {
                 console.log(response.data)
                 dispatch({ type: "TOKEN_INFOS", payload: tokenDisplay });
                 navigate('/dashboard');
+                localStorage.setItem('userToken', response.data.body.token);
+                localStorage.setItem('userData', JSON.stringify(response.data.body));
+
             } else {
                 const errMsg = `Login failed with status: ${response.data.status}`;
                 dispatch(loginFailure(errMsg));

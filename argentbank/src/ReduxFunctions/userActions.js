@@ -1,4 +1,4 @@
-import { LOGIN_FAILURE, LOGIN_SUCCESS, TOKEN_INFOS, GET_ACCOUNTS, UPDATE_PROFILE_FAILURE, UPDATE_PROFILE_SUCCESS } from "./actionTypes";
+import { LOGIN_FAILURE, LOGIN_SUCCESS, LOGOUT, TOKEN_INFOS, GET_ACCOUNTS, UPDATE_PROFILE_FAILURE, UPDATE_PROFILE_SUCCESS } from "./actionTypes";
 export const loginSuccess = (user) => ({
     type: LOGIN_SUCCESS,
     payload: user,
@@ -18,13 +18,14 @@ export const getAccounts = (accounts) => ({
     payload: accounts,
 });
 
-export const LOGOUT = 'LOGOUT';
-
 export function logout() {
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('userData');
     return {
         type: LOGOUT,
     };
 }
+
 
 export const updateProfileSuccess = (userProfile) => ({
     type: UPDATE_PROFILE_SUCCESS,

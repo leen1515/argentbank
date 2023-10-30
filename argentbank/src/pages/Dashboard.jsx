@@ -98,10 +98,14 @@ function Dashboard() {
     };
     
     const handleSaveClick = () => {
-        if (!isValidName(tempFirstName) || !isValidName(tempLastName)) {
+        if ((!isValidName(tempFirstName) || !isValidName(tempLastName))) {
             const errMsg = "Invalid name. Names can only contain letters, spaces, hyphens, and apostrophes.";
             setErrorMessage(errMsg);
             setShowErrorModal(true);
+            return;
+        }
+        if ((tempFirstName === profile.firstName && tempLastName === profile.lastName) || (!tempFirstName || !tempLastName)) {
+            setEditMode(false);
             return;
         }
         dispatch(updateUserProfile(token, tempFirstName, tempLastName));

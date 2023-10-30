@@ -9,29 +9,29 @@ import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../ReduxFunctions/userActions';
 
 function SetRoutes() {
-const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-useEffect(() => {
-  const userToken = localStorage.getItem('userToken');
-  const userData = localStorage.getItem('userData');
+    useEffect(() => {
+        const userToken = localStorage.getItem('userToken');
+        const userData = localStorage.getItem('userData');
 
-  if (userToken && userData) {
-      dispatch(loginSuccess(JSON.parse(userData)));
-      dispatch({ type: "TOKEN_INFOS", payload: userToken });
-  }
-}, [dispatch]);
+        if (userToken && userData) {
+            dispatch(loginSuccess(JSON.parse(userData)));
+            dispatch({ type: "TOKEN_INFOS", payload: userToken });
+        }
+    }, [dispatch]);
 
-  return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/dashboard" element={
-          <PrivateRoute>
-              <Dashboard />
-          </PrivateRoute>
-      } />
-    </Routes>
-  );
+    return (
+        <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/dashboard" element={
+                <PrivateRoute>
+                    <Dashboard />
+                </PrivateRoute>
+            } />
+        </Routes>
+    );
 }
 
 export default SetRoutes;

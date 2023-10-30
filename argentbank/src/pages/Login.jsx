@@ -80,8 +80,6 @@ function Login() {
     
     const navigate = useNavigate();
 
-
-    
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
@@ -101,6 +99,8 @@ function Login() {
             localStorage.setItem('savedEmail', email); 
         } else {
             localStorage.removeItem('savedEmail'); 
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('userData');
         }
 
         try {
@@ -110,10 +110,13 @@ function Login() {
                 const tokenDisplay = response.data.body.token;
                 console.log(response.data)
                 dispatch({ type: "TOKEN_INFOS", payload: tokenDisplay });
-                navigate('/dashboard');
-                localStorage.setItem('userToken', response.data.body.token);
-                localStorage.setItem('userData', JSON.stringify(response.data.body));
 
+                if (rememberMe) {
+                    localStorage.setItem('savedEmail', email);
+                    localStorage.setItem('userToken', response.data.body.token);
+                    localStorage.setItem('userData', JSON.stringify(response.data.body));
+                } 
+                navigate('/dashboard');
             } else {
                 const errMsg = `Login failed with status: ${response.data.status}`;
                 dispatch(loginFailure(errMsg));
@@ -125,6 +128,10 @@ function Login() {
             dispatch(loginFailure(errMsg));
             setErrorMessage(errMsg);
             setShowErrorModal(true);
+            if (!rememberMe) {
+                localStorage.clear();
+                navigate('/login');
+            }
         } finally {
         setLoading(false);
         }

@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../ReduxFunctions/userActions';
 import { useSelector } from 'react-redux';
 import arrowRight from '../icones/arrow-right.svg';
+import { useNavigate } from 'react-router-dom';
 
 const MainNav = styled.div`
   display: flex;
@@ -83,11 +84,15 @@ const SignOut = styled(NavItem)`
 function Header() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authentification.accounts);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
+    localStorage.removeItem('savedEmail');
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('userData');
+    navigate('/login');
     dispatch(logout());
 };
-
   return (
     <MainNav>
         <NavLogo>

@@ -116,7 +116,7 @@ function Dashboard() {
     return (
         <Main>
             {loading && <Loader />}
-            <Header>
+            <Header><h1>Welcome back</h1>
                 {(profile) && (
                     editMode ? (
                     <EditMode>
@@ -139,7 +139,7 @@ function Dashboard() {
                             </EditMode>
                     ) : (
                         <>
-                            <h1>Welcome back<br/>{(tempFirstName? tempFirstName : profile.firstName) +" "+ (tempLastName? tempLastName:profile.lastName) }!</h1>        
+                            <h1>{(tempFirstName? tempFirstName : profile.firstName) +" "+ (tempLastName? tempLastName:profile.lastName) }!</h1>        
                             <EditButton onClick={handleEditClick}>
                             Edit Name
                             </EditButton>

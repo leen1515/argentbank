@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
-import api from '../services/apiService';
+import { apiInstanceHandler } from '../services/apiService';
 import { Button, MainStyle } from '../style/Global';
 import { getAccounts } from '../ReduxFunctions/userActions';
 import Solde from '../components/Solde';
@@ -58,6 +58,7 @@ const ButtonEditLeft = styled(Button)`
 `;
 function Dashboard() {
     const dispatch = useDispatch();
+    const api = apiInstanceHandler(dispatch);
     const token = useSelector(state => state.authentification.tokenInfos);
     const profile = useSelector(state => state.authentification.accounts);
     const [editMode, setEditMode] = useState(false);
@@ -81,7 +82,7 @@ function Dashboard() {
                     firstName: getProfileDatas.firstName, lastName: getProfileDatas.lastName, email: getProfileDatas.email, accounts: getProfileDatas.accounts
                 }))
             } catch (error) {
-                console.error("There was an error fetching the profile!", error);
+                console.log(error);
             } finally {
                 setLoading(false);
             }

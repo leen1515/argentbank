@@ -9,6 +9,7 @@ import Modal from '../components/ModalError';
 import { isValidEmail, isValidPassword } from '../utils';
 import Loader from '../components/Loader';
 import { errorMessage } from '../ReduxFunctions/userActions';
+import  useLocalStorage  from '../customhooks/useLocalStorage';
 
 const Main = styled(MainStyle)`
     height: 70vh;
@@ -68,13 +69,18 @@ const RememberMeWrapper = styled.div`
     display: flex;
     margin-bottom: 1rem;
 `;
-
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const [savedEmail, setSavedEmail, removeSavedEmail] = useLocalStorage('savedEmail', '');
+    const [userToken, setUserToken, removeUserToken] = useLocalStorage('userToken', null);
+    const [userData, setUserData, removeUserData] = useLocalStorage('userData', null);
+
+
     const dispatch = useDispatch();
     const api = apiInstanceHandler(dispatch);
     const navigate = useNavigate();
@@ -87,52 +93,57 @@ function Login() {
         if (!isValidEmail(email)) {
             dispatch(errorMessage("Invalid email address."));
             setShowErrorModal(true);
+            setLoading(false);
             return;
         }
-        
+
         if (!isValidPassword(password)) {
             dispatch(errorMessage("Password must be at least 3 characters long and contain at least one letter and one number."));
             setShowErrorModal(true);
+            setLoading(false);
             return;
-        }
-        if (rememberMe) {
-            localStorage.setItem('savedEmail', email); 
-        } else {
-            localStorage.removeItem('savedEmail'); 
-            localStorage.removeItem('userToken');
-            localStorage.removeItem('userData');
         }
 
         try {
             const response = await api.post('/login', { email, password });
-            dispatch(loginSuccess(response.data.body));
             const tokenDisplay = response.data.body.token;
+
+            dispatch(loginSuccess(response.data.body));
             dispatch({ type: "TOKEN_INFOS", payload: tokenDisplay });
-    
+
             if (rememberMe) {
-                localStorage.setItem('savedEmail', email);
-                localStorage.setItem('userToken', tokenDisplay);
-                localStorage.setItem('userData', JSON.stringify(response.data.body));
-            } 
+                setSavedEmail(email);
+                setUserToken(tokenDisplay);
+                setUserData(JSON.stringify(response.data.body));
+            } else {
+                removeSavedEmail();
+                removeUserToken();
+                removeUserData();
+            }
+
             navigate('/dashboard');
-            
+
         } catch (error) {
             setShowErrorModal(true);
+            dispatch(errorMessage("Failed to log in."));
             if (!rememberMe) {
-                localStorage.clear();
-                }
-                navigate('/login');
-            } finally {
-                setLoading(false);
+                removeSavedEmail();
+                removeUserToken();
+                removeUserData();
             }
-        };
-        useEffect(() => {
-            const savedEmail = localStorage.getItem('savedEmail');
-            if (savedEmail) {
-                setEmail(savedEmail);
-                setRememberMe(true); 
-            }
-        }, [errMessage]);
+            navigate('/login');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (savedEmail) {
+            setEmail(savedEmail);
+            setRememberMe(true);
+        }
+    }, [savedEmail]);
+
     return (
         <Main>
             {loading && <Loader />}
@@ -140,7 +151,7 @@ function Login() {
                 <Icon className="fa fa-user-circle" />
                 <LoginTitle>Sign In</LoginTitle>
                 <Form onSubmit={handleSubmit}>
-                <InputWrapper>
+                    <InputWrapper>
                         <Label htmlFor="email">Email</Label>
                         <Input
                             id="email"
@@ -166,16 +177,17 @@ function Login() {
                             id="remember-me" 
                             checked={rememberMe} 
                             onChange={(e) => setRememberMe(e.target.checked)} 
-                        /><Label htmlFor="remember-me"><RememberDiv>Remember me</RememberDiv></Label>               
-                        </RememberMeWrapper>
+                        />
+                        <Label htmlFor="remember-me"><RememberDiv>Remember me</RememberDiv></Label>               
+                    </RememberMeWrapper>
                     <SignInButton type="submit">Sign In</SignInButton>
                 </Form>
             </Section>
-                <Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
-                    <h2>Error</h2>
-                    <p>{errMessage}</p>
-                    <Button onClick={() => setShowErrorModal(false)}>Close</Button>
-                </Modal>
+            <Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
+                <h2>Error</h2>
+                <p>{errMessage}</p>
+                <Button onClick={() => setShowErrorModal(false)}>Close</Button>
+            </Modal>
         </Main>
     );
 }

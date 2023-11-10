@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../ReduxFunctions/userActions';
 import { useSelector } from 'react-redux';
 import arrowRight from '../icones/arrow-right.svg';
-import { useNavigate } from 'react-router-dom';
+import useLocalStorage from '../customhooks/useLocalStorage';
 
 const MainNav = styled.div`
   display: flex;
@@ -84,13 +84,15 @@ const SignOut = styled(NavItem)`
 function Header() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authentification.accounts);
-  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('savedEmail');
-    localStorage.removeItem('userToken');
-    localStorage.removeItem('userData');
-    navigate('/login');
+  const [, , removeUserCredentials] = useLocalStorage('userCredentials', {
+    email: '',
+    token: null,
+    userData: null
+});
+
+const handleLogout = () => {
+    removeUserCredentials();
     dispatch(logout());
 };
   return (
@@ -108,7 +110,7 @@ function Header() {
               <UserIcon src={userCircleIcon} alt="User Icon" />
               {user.firstName}
           </LinkDashboard>
-          <SignOut onClick={handleLogout}>
+          <SignOut to="/login" onClick={handleLogout}>
               <UserSignOut src={arrowRight} alt="Sign Out Icon" />
               Sign Out
           </SignOut>

@@ -7,20 +7,20 @@ import Dashboard from '../pages/Dashboard';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../ReduxFunctions/userActions';
+import useLocalStorage from '../customhooks/useLocalStorage';
 
 function SetRoutes() {
     const dispatch = useDispatch();
+    const [userToken] = useLocalStorage('userToken', null);
+    const [userData] = useLocalStorage('userData', null);
 
     useEffect(() => {
-        const userToken = localStorage.getItem('userToken');
-        const userData = localStorage.getItem('userData');
-
+        console.log(userToken, userData);
         if (userToken && userData) {
-            dispatch(loginSuccess(JSON.parse(userData)));
+            dispatch(loginSuccess(userData));
             dispatch({ type: "TOKEN_INFOS", payload: userToken });
         }
-    }, [dispatch]);
-
+    }, [dispatch, userToken, userData]);
     return (
         <Routes>
             <Route path="/login" element={<Login />} />

@@ -1,15 +1,11 @@
 import styled from 'styled-components';
-import { useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
-import { apiInstanceHandler } from '../services/apiService';
 import { Button, MainStyle } from '../style/Global';
-import { getAccounts } from '../ReduxFunctions/userActions';
 import Solde from '../components/Solde';
 import { useState } from 'react';
 import { updateUserProfile } from '../services/updateProfil';
 import { isValidName } from '../utils';
 import Modal from '../components/ModalError';
-import Loader from '../components/Loader';
 
 const Main = styled(MainStyle)`
     flex: 1;
@@ -58,7 +54,6 @@ const ButtonEditLeft = styled(Button)`
 `;
 function Dashboard() {
     const dispatch = useDispatch();
-    const api = apiInstanceHandler(dispatch);
     const token = useSelector(state => state.authentification.tokenInfos);
     const profile = useSelector(state => state.authentification.accounts);
     const [editMode, setEditMode] = useState(false);
@@ -66,33 +61,7 @@ function Dashboard() {
     const [tempLastName, setTempLastName] = useState(null);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-            setLoading(true);
-            try {
-                const headers = {
-                    Authorization: `Bearer ${token}`
-                };
-                const response = await api.post('/profile', {}, { headers });
-                const getProfileDatas = response.data.body;
-                console.log("getProfileDatas", getProfileDatas, response);
-                dispatch(getAccounts({
-                    firstName: getProfileDatas.firstName, lastName: getProfileDatas.lastName, email: getProfileDatas.email, accounts: getProfileDatas.accounts
-                }))
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        
-        if (token) {
-            fetchProfile();
-        }
-        
-    }, [token]);
 
     const handleEditClick = () => {
         setEditMode(!editMode);
@@ -115,7 +84,6 @@ function Dashboard() {
         
     return (
         <Main>
-            {loading && <Loader />}
             <Header><h1>Welcome back</h1>
                 {(profile) && (
                     editMode ? (

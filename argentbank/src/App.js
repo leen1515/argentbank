@@ -2,7 +2,7 @@ import Header from "./components/Header";
 import FooterComponents from "./components/Footer";
 import { createGlobalStyle } from "styled-components";
 import SetRoutes from "./routes/SetRoutes";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from './components/Loader';
 import { fetchProfil } from "./services/fetchProfil";
@@ -35,7 +35,7 @@ margin: 0;
   function App() {
     const dispatch = useDispatch();
     const token = useSelector(state => state.authentification.tokenInfos);
-  // const [loading, setLoading] = useState(false);
+    const isLoading = useSelector(state => state.authentification.isLoading);
   
     useEffect(() => {
       if (token) {
@@ -45,7 +45,7 @@ margin: 0;
 
   return (
     <>
-      {/* {loading && <Loader />} */}
+      {isLoading && <Loader />}
       <GlobalStyle />
       <Header />
       <SetRoutes/>

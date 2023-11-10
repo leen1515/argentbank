@@ -1,5 +1,5 @@
 import { apiInstanceHandler } from "./apiService";
-import { updateProfileSuccess } from "../ReduxFunctions/userActions";
+import { updateProfileSuccess, isLoading } from "../ReduxFunctions/userActions";
 
 export const updateUserProfile = (token, firstName, lastName) =>
     async (dispatch) => {
@@ -7,10 +7,16 @@ export const updateUserProfile = (token, firstName, lastName) =>
     const headers = {
         Authorization: `Bearer ${token}`,
     };
-    const response = await api.put(
+    try{
+        dispatch(isLoading(true));
+        const response = await api.put(
         "/profile",
         { firstName, lastName },
         { headers }
     );
     dispatch(updateProfileSuccess(response.data));
+    } catch(error){
+        console.log(error);
+    } finally {
+        dispatch(isLoading(false));}
 };

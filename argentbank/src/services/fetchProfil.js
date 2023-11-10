@@ -1,5 +1,5 @@
 import { apiInstanceHandler } from "./apiService";
-import { getAccounts } from "../ReduxFunctions/userActions";
+import { getAccounts, isLoading } from "../ReduxFunctions/userActions";
 
 export const fetchProfil = (token) => 
     async (dispatch) => {
@@ -8,6 +8,7 @@ export const fetchProfil = (token) =>
         Authorization: `Bearer ${token}`,
     };
     try{
+    dispatch(isLoading(true));
     const response = await api.post("/profile", {}, { headers });
     const getProfileDatas = response.data.body;
     dispatch(
@@ -20,5 +21,6 @@ export const fetchProfil = (token) =>
     );
     } catch(error){
         console.log(error);
-    }
+    } finally {
+        dispatch(isLoading(false));}
 };

@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAILURE, TOKEN_INFOS, GET_ACCOUNTS, LOGOUT, UPDATE_PROFILE_FAILURE, UPDATE_PROFILE_SUCCESS, ERROR_MESSAGE} from './actionTypes';
+import { LOGIN_SUCCESS, LOGIN_FAILURE, TOKEN_INFOS, GET_ACCOUNTS, LOGOUT, UPDATE_PROFILE_FAILURE, UPDATE_PROFILE_SUCCESS, ERROR_MESSAGE, IS_LOADING} from './actionTypes';
 
 
 const initialState = {
@@ -6,6 +6,7 @@ const initialState = {
     error: null,
     tokenInfos: null,
     accounts: null,
+    isLoading: false,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -44,7 +45,10 @@ export const authReducer = (state = initialState, action) => {
             return { ...state, 
                 error: action.payload
         };
-
+        case IS_LOADING:
+            return { ...state, 
+                isLoading: action.payload
+        };
         default:
             return state;
     }

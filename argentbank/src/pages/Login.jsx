@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Button, MainStyle, Title } from '../style/Global';
 import { apiInstanceHandler } from '../services/apiService';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginSuccess } from '../ReduxFunctions/userActions';
+import { loginSuccess, isLoading } from '../ReduxFunctions/userActions';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../components/ModalError';
@@ -105,6 +105,7 @@ function Login() {
         }
 
         try {
+            dispatch(isLoading(true));
             const response = await api.post('/login', { email, password });
             const tokenDisplay = response.data.body.token;
 
@@ -133,7 +134,7 @@ function Login() {
             }
             navigate('/login');
         } finally {
-            setLoading(false);
+            dispatch(isLoading(false));
         }
     };
 

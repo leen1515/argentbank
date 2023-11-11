@@ -16,23 +16,32 @@ width: 200px;
 
 const EditMode = styled.div`
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    @media (min-width: 720px){
+        flex-direction: row;
+    }
 `;
 
 const FieldWrapper = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
+    @media (min-width: 720px){
+        flex-direction: column;
+    }
     & > input {
-        width: 200px;
+        width: 50%;
         height: 30px;
         margin: 2px 0px;
         padding: 5px;
         font-size: 1.2rem;
+        @media (min-width: 720px){
+            width: 200px;
+        }
     }
 `;
 
@@ -43,19 +52,29 @@ const Header = styled.div`
 
 const ButtonEditRight = styled(Button)`
     width: 70px;
-    margin-top: 1rem;
-    margin-right :140px;
+    margin-top: 0;
+    margin-right :0;
+    @media (min-width: 720px){
+        margin-right :140px;
+        margin-top: 1rem;
+
+    }
 `;
 
 const ButtonEditLeft = styled(Button)`
     width: 70px;
-    margin-top: 1rem;
-    margin-left: 140px;
+    margin-top: 0;
+    margin-left:0;
+    @media (min-width: 720px){
+        margin-left: 140px;
+        margin-top: 1rem;
+
+    }
 `;
 function Dashboard() {
     const dispatch = useDispatch();
     const token = useSelector(state => state.authentification.tokenInfos);
-    const profile = useSelector(state => state.authentification?.accounts);
+    const profile = useSelector(state => state.authentification.accounts);
     const [editMode, setEditMode] = useState(false);
     const [tempFirstName, setTempFirstName] = useState(profile?.firstName || "");
     const [tempLastName, setTempLastName] = useState(profile?.lastName || "");
@@ -71,24 +90,20 @@ function Dashboard() {
     }, [profile]);
 
     const handleEditClick = () => {
-        if (tempFirstName === null && profile) {
+        if (tempFirstName === "" && profile) {
             setTempFirstName(profile.firstName);
         }
-        if (tempLastName === null && profile) {
+        if (tempLastName === "" && profile) {
             setTempLastName(profile.lastName);
         }
         setEditMode(!editMode);
     };
 
     const handleSaveClick = () => {
-        if ((!isValidName(tempFirstName) || !isValidName(tempLastName))) {
+        if ((!isValidName(tempFirstName) || !isValidName(tempLastName)) ) {
             const errMsg = "Invalid name. Names can only contain letters, spaces, hyphens, and apostrophes.";
             setErrorMessage(errMsg);
             setShowErrorModal(true);
-            return;
-        }
-        if ((tempFirstName === profile.firstName && tempLastName === profile.lastName) || (!tempFirstName || !tempLastName)) {
-            setEditMode(false);
             return;
         }
         dispatch(updateUserProfile(token, tempFirstName, tempLastName));
@@ -107,7 +122,7 @@ const displayLastName = profile?.lastName || tempLastName;
                     <EditMode>
                         <FieldWrapper>
                             <input 
-                                value={tempFirstName? tempFirstName : profile.firstName}
+                                value={tempFirstName}
                                 placeholder={profile.firstName || ""}
                                 onChange={(e) => setTempFirstName(e.target.value)}
                             
@@ -115,7 +130,7 @@ const displayLastName = profile?.lastName || tempLastName;
                             <ButtonEditLeft onClick={handleSaveClick}>Save</ButtonEditLeft>
                             </FieldWrapper>
                             <FieldWrapper><input 
-                                value={tempLastName? tempLastName : profile.lastName}
+                                value={tempLastName}
                                 onChange={(e) => setTempLastName(e.target.value)}
                                 placeholder={profile.lastName || ""}
                             />

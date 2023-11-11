@@ -8,6 +8,9 @@ const TransactionButton = styled(Button)`
     font-size: 1.1rem;
     margin-top: 1rem;
     align-self: flex-end;
+    @media (min-width: 720px){
+    width: 200px;
+    }
 `;
 const Title = styled.h1``;
 
@@ -19,11 +22,14 @@ const AccountSection = styled.section`
     background-color: #fff;
     width: 80%;
     margin: 0 auto;
-    flex-direction: row;
+    flex-direction: column;
     padding: 1.5rem;
     box-sizing: border-box;
     text-align: left;
     margin-bottom: 2rem;
+    @media (min-width: 720px) {
+        flex-direction: row;
+}
 `;
 
 const AccountContentWrapper = styled.div`

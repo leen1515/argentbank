@@ -91,12 +91,14 @@ function Login() {
         if (!isValidEmail(email)) {
             dispatch(errorMessage("Invalid email address."));
             setShowErrorModal(true);
+            dispatch(isLoading(false));
             return;
         }
 
         if (!isValidPassword(password)) {
             dispatch(errorMessage("Password must be at least 3 characters long and contain at least one letter and one number."));
             setShowErrorModal(true);
+            dispatch(isLoading(false));
             return;
         }
 
@@ -150,9 +152,10 @@ function Login() {
                         <Input
                             id="email"
                             type="email" 
-                            value={email}
+                            value={email || ''}
                             onChange={(e) => setEmail(e.target.value)} 
                             placeholder="Email" 
+                            autoComplete='off'
                         />
                     </InputWrapper>
                     <InputWrapper>
@@ -160,9 +163,10 @@ function Login() {
                         <Input
                             id="password"
                             type="password"
-                            value={password}
+                            value={password || ''}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
+                            autoComplete='off'
                         />
                     </InputWrapper>
                     <RememberMeWrapper>

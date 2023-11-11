@@ -53,7 +53,7 @@ const InputWrapper = styled.div`
 
 const Label = styled.label`
     font-weight: bold;
-   
+
 `;
 const RememberDiv = styled.div`
         font-size: 1rem;
@@ -74,12 +74,11 @@ function Login() {
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     const [savedEmail, setSavedEmail, removeSavedEmail] = useLocalStorage('savedEmail', '');
     const [userToken, setUserToken, removeUserToken] = useLocalStorage('userToken', null);
     const [userData, setUserData, removeUserData] = useLocalStorage('userData', null);
-
+    const loading = useSelector(state => state.authentification.isLoading); 
 
     const dispatch = useDispatch();
     const api = apiInstanceHandler(dispatch);
@@ -88,27 +87,22 @@ function Login() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setLoading(true);
-
+        dispatch(isLoading(true));
         if (!isValidEmail(email)) {
             dispatch(errorMessage("Invalid email address."));
             setShowErrorModal(true);
-            setLoading(false);
             return;
         }
 
         if (!isValidPassword(password)) {
             dispatch(errorMessage("Password must be at least 3 characters long and contain at least one letter and one number."));
             setShowErrorModal(true);
-            setLoading(false);
             return;
         }
 
         try {
-            dispatch(isLoading(true));
             const response = await api.post('/login', { email, password });
             const tokenDisplay = response.data.body.token;
-
             dispatch(loginSuccess(response.data.body));
             dispatch({ type: "TOKEN_INFOS", payload: tokenDisplay });
 
@@ -126,7 +120,6 @@ function Login() {
 
         } catch (error) {
             setShowErrorModal(true);
-            dispatch(errorMessage("Failed to log in."));
             if (!rememberMe) {
                 removeSavedEmail();
                 removeUserToken();
@@ -184,7 +177,9 @@ function Login() {
                     <SignInButton type="submit">Sign In</SignInButton>
                 </Form>
             </Section>
-            <Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
+            <Modal show={showErrorModal} onClose={() => {
+        setShowErrorModal(false);
+                }}>
                 <h2>Error</h2>
                 <p>{errMessage}</p>
                 <Button onClick={() => setShowErrorModal(false)}>Close</Button>

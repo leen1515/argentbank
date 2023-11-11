@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { errorMessage } from '../ReduxFunctions/userActions';
+import { errorMessage, isLoading } from '../ReduxFunctions/userActions';
 
 export function apiInstanceHandler(dispatch){
     const api = axios.create({
@@ -9,6 +9,7 @@ export function apiInstanceHandler(dispatch){
     api.interceptors.response.use(
       response => {
         dispatch(errorMessage(null));
+        dispatch(isLoading(false));
         return response;
       },
       error => {
@@ -26,6 +27,7 @@ export function apiInstanceHandler(dispatch){
               break;
           }
         }
+        dispatch(isLoading(false));
         dispatch(errorMessage(errorMsg));
         return Promise.reject(error);
       }

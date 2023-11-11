@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import argentBankLogo from '../img/argentBankLogo.png';
 import userCircleIcon from '../icones/user-circle.svg';

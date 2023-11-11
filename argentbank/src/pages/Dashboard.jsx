@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useSelector, useDispatch} from 'react-redux';
 import { Button, MainStyle } from '../style/Global';
 import Solde from '../components/Solde';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { updateUserProfile } from '../services/updateProfil';
 import { isValidName } from '../utils';
 import Modal from '../components/ModalError';
@@ -55,18 +55,31 @@ const ButtonEditLeft = styled(Button)`
 function Dashboard() {
     const dispatch = useDispatch();
     const token = useSelector(state => state.authentification.tokenInfos);
-    const profile = useSelector(state => state.authentification.accounts);
+    const profile = useSelector(state => state.authentification?.accounts);
     const [editMode, setEditMode] = useState(false);
-    const [tempFirstName, setTempFirstName] = useState(null);
-    const [tempLastName, setTempLastName] = useState(null);
+    const [tempFirstName, setTempFirstName] = useState(profile?.firstName || "");
+    const [tempLastName, setTempLastName] = useState(profile?.lastName || "");
+    
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
+    useEffect(() => {
+        if (profile) {
+            if (tempFirstName === null) setTempFirstName(profile.firstName);
+            if (tempLastName === null) setTempLastName(profile.lastName);
+        }
+    }, [profile]);
 
     const handleEditClick = () => {
+        if (tempFirstName === null && profile) {
+            setTempFirstName(profile.firstName);
+        }
+        if (tempLastName === null && profile) {
+            setTempLastName(profile.lastName);
+        }
         setEditMode(!editMode);
     };
-    
+
     const handleSaveClick = () => {
         if ((!isValidName(tempFirstName) || !isValidName(tempLastName))) {
             const errMsg = "Invalid name. Names can only contain letters, spaces, hyphens, and apostrophes.";
@@ -81,7 +94,11 @@ function Dashboard() {
         dispatch(updateUserProfile(token, tempFirstName, tempLastName));
         setEditMode(false);
     };
-        
+
+const displayFirstName = profile?.firstName || tempFirstName;
+const displayLastName = profile?.lastName || tempLastName;
+
+
     return (
         <Main>
             <Header><h1>Welcome back</h1>
@@ -90,24 +107,24 @@ function Dashboard() {
                     <EditMode>
                         <FieldWrapper>
                             <input 
-                                value={tempFirstName? tempFirstName : ""}
-                                placeholder={profile.firstName}
+                                value={tempFirstName? tempFirstName : profile.firstName}
+                                placeholder={profile.firstName || ""}
                                 onChange={(e) => setTempFirstName(e.target.value)}
                             
                             />
                             <ButtonEditLeft onClick={handleSaveClick}>Save</ButtonEditLeft>
                             </FieldWrapper>
                             <FieldWrapper><input 
-                                value={tempLastName? tempLastName : ""}
+                                value={tempLastName? tempLastName : profile.lastName}
                                 onChange={(e) => setTempLastName(e.target.value)}
-                                placeholder={profile.lastName}
+                                placeholder={profile.lastName || ""}
                             />
                             <ButtonEditRight onClick={handleEditClick}>Cancel</ButtonEditRight>
                             </FieldWrapper>
                             </EditMode>
                     ) : (
                         <>
-                            <h1>{(tempFirstName? tempFirstName : profile.firstName) +" "+ (tempLastName? tempLastName:profile.lastName) }!</h1>        
+                            <h1>{displayFirstName + " " + displayLastName}!</h1>        
                             <EditButton onClick={handleEditClick}>
                             Edit Name
                             </EditButton>

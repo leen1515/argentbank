@@ -18,7 +18,6 @@ export const updateUserProfile = (token, firstName, lastName) => async (dispatch
             accounts: getProfileDatas.accounts,
             })
         );        
-        console.log("updateprofil", response.data.body);
 
     } catch (error) {
         console.error(error);

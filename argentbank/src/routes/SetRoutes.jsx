@@ -15,7 +15,6 @@ function SetRoutes() {
     const [userData] = useLocalStorage('userData', null);
 
     useEffect(() => {
-        console.log(userToken, userData);
         if (userToken && userData) {
             dispatch(loginSuccess(userData));
             dispatch({ type: "TOKEN_INFOS", payload: userToken });

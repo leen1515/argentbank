@@ -1,70 +1,64 @@
-# Getting Started with Create React App
+# ArgentBank
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Ce projet consiste à proposer une application React pour la gestion de comptes bancaires pour ArgentBank.
+Sa documentation est en ligne sur 
+https://leen1515.github.io/argentbank/
 
-## Available Scripts
+## Fonctionnalités
+Voici les parties qui sont disponibles :
+- Connexion et déconnexion des utilisateurs.
+- Affichage et édition des informations personnelles.
+- Visualisation des soldes de comptes.
 
-In the project directory, you can run:
+Il y a 3 pages principales :
+- Une landing page
+- Une page de connexion
+- Une page profil, le tableau de bord
+- 
+La partie des soldes de comptes est gérée avec un composant React et des props, Pour le moment ses données lui sont communiquées en dur.
+La gestion des messages d'erreur du aux données est centralisé, Ils sont gérés avec interceptors de Axios.
 
-### `npm start`
+## Technologies Utilisées
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React
+- Redux pour la gestion des états
+- Axios pour les requêtes API
+- Styled Component pour la gestion du css
+- React-Router pour la gestion des routes
+- js-docs pour la partie documentation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Installation et Démarrage
+Cette application fonctionne avec la base de donnée MongoDb.
+Il y a besoin d'installer MongoDbCompass, de le demarrer, et d'y migrer les données présentes du projet server de l'api pour le tester.
 
-### `npm test`
+Le server api fonctionne avec node12. Il faut le cloner depuis le git d'openclassrooms, J'utilise nvm pour alterner entre les versions de node avant de le mettre en route.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+nvm use 12
+```
+Pour démarrer le server API
+```bash
+git clone https://github.com/OpenClassrooms-Student-Center/Project-10-Bank-API.git
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+npm install
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+npm run dev:server
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+npm run populate-db
+```
 
-### `npm run eject`
+et je retourne en node 18 pour travailler avec mon projet:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+nvm use 18
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+git clone https://github.com/leen1515/argentbank.git
+cd argentbank
+npm install
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Bonne visite !  

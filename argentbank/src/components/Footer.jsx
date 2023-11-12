@@ -17,6 +17,20 @@ const FooterText = styled.p`
   padding: 0;
 `;
 
+/**
+ * Footer component of the application.
+ *
+ * component for displaying the footer section.
+ * It includes copyright information.
+ * 
+ * @name MainFooter
+ * @memberof UI
+ * @component
+ * @example
+ * return (
+ *   <FooterComponents />
+ * )
+ */
 function FooterComponents(){
     return <Footer>
     <FooterText>Copyright 2020 Argent Bank</FooterText>

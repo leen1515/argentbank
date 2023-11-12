@@ -59,6 +59,27 @@ const AccountAmountDescription = styled.p`
     margin: 0;
 `;
 
+/**
+ * An account balance section in the application.
+ *
+ * Component used to displays details of a user's account, including the title of the account,
+ * the amount, and a description of the account amount. It also includes a button to view transactions.
+ *
+ * @name AccountBalance
+ * @memberof UI
+ * @component
+ * @param {string} accountTitle - The title of the account.
+ * @param {string} accountAmount - The total amount in the account.
+ * @param {string} accountAmountDescription - A brief description of the account amount.
+ * @example
+ * return (
+ *   <Solde 
+ *     accountTitle="Checking Account" 
+ *     accountAmount="$2,082.79" 
+ *     accountAmountDescription="Available Balance"
+ *   />
+ * )
+ */
 function Solde({accountTitle, accountAmount, accountAmountDescription}){
 
     return(

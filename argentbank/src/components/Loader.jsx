@@ -28,6 +28,19 @@ const LoaderSpinner = styled.div`
   animation: ${spin} 2s linear infinite;
 `;
 
+
+/**
+ * Loader component that displays a loading spinner.
+ * it indicates loading state of the application.
+ *
+ * @name LoadingSpinner
+ * @memberof UI
+ * @component
+ * @example
+ * return (
+ *   <Loader />
+ * )
+ */
 function Loader(){
     return(
   <LoaderWrapper>

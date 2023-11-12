@@ -69,6 +69,22 @@ const RememberMeWrapper = styled.div`
     display: flex;
     margin-bottom: 1rem;
 `;
+
+/**
+ * Login page component.
+ *
+ * It's responsible for rendering the login form and handling user authentication.
+ * It manages local states for user inputs, loading status, and error handling. It also integrates
+ * with Redux for global state management and navigation after successful login.
+ *
+ * @name LoginComponent
+ * @memberof UI
+ * @component
+ * @example
+ * return (
+ *   <Login />
+ * )
+ */
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -84,7 +100,11 @@ function Login() {
     const api = apiInstanceHandler(dispatch);
     const navigate = useNavigate();
     const errMessage = useSelector(state => state.authentification.error);
-
+    /**
+     * Handles the submission of the login form.
+     * Performs input validation, dispatches login actions, and navigates to the dashboard.
+     * @param {Event} event - The form submission event.
+     */
     const handleSubmit = async (event) => {
         event.preventDefault();
         dispatch(isLoading(true));

@@ -80,6 +80,22 @@ const SignOut = styled(NavItem)`
   }
 `;
 
+/**
+ * Main navigation header of the application.
+ *
+ * component for displaying the navigation bar, which includes
+ * the application's logo, user dashboard links, and sign-in/sign-out functionality.
+ * It uses Redux for state management.
+ *
+ * @name MainNavigationHeader
+ * @memberof UI
+ * @component
+ * @example
+ * return (
+ *  <Header />
+ * )
+**/
+
 function Header() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authentification.accounts);
@@ -90,6 +106,14 @@ function Header() {
     userData: null
 });
 
+/**
+   * Handles user logout.
+   * Clears user credentials from local storage and dispatches a logout action.
+   *
+   * @name LogoutHandler
+   * @memberof UI.MainNavigationHeader
+   * @function
+   */
 const handleLogout = () => {
     removeUserCredentials();
     dispatch(logout());

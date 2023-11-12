@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/Dashboard.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/Dashboard.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import styled from 'styled-components';
+import { useSelector, useDispatch} from 'react-redux';
+import { Button, MainStyle } from '../style/Global';
+import Solde from '../components/Solde';
+import { useState, useEffect } from 'react';
+import { updateUserProfile } from '../services/updateProfil';
+import { isValidName } from '../utils';
+import Modal from '../components/ModalError';
+
+const Main = styled(MainStyle)`
+    flex: 1;
+`;
+const EditButton = styled(Button)`
+width: 200px;
+`;
+
+const EditMode = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    @media (min-width: 720px){
+        flex-direction: row;
+    }
+`;
+
+const FieldWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    @media (min-width: 720px){
+        flex-direction: column;
+    }
+    &amp; > input {
+        width: 50%;
+        height: 30px;
+        margin: 2px 0px;
+        padding: 5px;
+        font-size: 1.2rem;
+        @media (min-width: 720px){
+            width: 200px;
+        }
+    }
+`;
+
+const Header = styled.div`
+    color: #fff;
+    margin-bottom: 2rem;
+`;
+
+const ButtonEditRight = styled(Button)`
+    width: 70px;
+    margin-top: 0;
+    margin-right :0;
+    @media (min-width: 720px){
+        margin-right :140px;
+        margin-top: 1rem;
+
+    }
+`;
+
+const ButtonEditLeft = styled(Button)`
+    width: 70px;
+    margin-top: 0;
+    margin-left:0;
+    @media (min-width: 720px){
+        margin-left: 140px;
+        margin-top: 1rem;
+
+    }
+`;
+
+
+/**
+ * Dashboard component, user's profile page.
+ *
+ * Component serves as the main user interface for displaying the user's account information
+ * and allowing the user to edit their name. It uses Redux for state management to handle user profile data
+ * and local component state to manage edit modes and error handling.
+ *
+ * @name DashboardComponent
+ * @memberof UI
+ * @component
+ * @example
+ * return (
+ *   &lt;Dashboard />
+ * )
+ */
+function Dashboard() {
+    const dispatch = useDispatch();
+    const token = useSelector(state => state.authentification.tokenInfos);
+    const profile = useSelector(state => state.authentification.accounts);
+    const [editMode, setEditMode] = useState(false);
+    const [tempFirstName, setTempFirstName] = useState(profile?.firstName || "");
+    const [tempLastName, setTempLastName] = useState(profile?.lastName || "");
+    
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    useEffect(() => {
+        if (profile) {
+            if (tempFirstName === null) setTempFirstName(profile.firstName);
+            if (tempLastName === null) setTempLastName(profile.lastName);
+        }
+    }, [profile]);
+
+    /**
+     * Toggles the edit mode for user profile name.
+     */
+    const handleEditClick = () => {
+        if (tempFirstName === "" &amp;&amp; profile) {
+            setTempFirstName(profile.firstName);
+        }
+        if (tempLastName === "" &amp;&amp; profile) {
+            setTempLastName(profile.lastName);
+        }
+        setEditMode(!editMode);
+    };
+    /**
+     * Saves the updated user profile name.
+     * Performs validation and dispatches update profile action.
+     */
+    const handleSaveClick = () => {
+        if ((!isValidName(tempFirstName) || !isValidName(tempLastName)) ) {
+            const errMsg = "Invalid name. Names can only contain letters, spaces, hyphens, and apostrophes.";
+            setErrorMessage(errMsg);
+            setShowErrorModal(true);
+            return;
+        }
+        dispatch(updateUserProfile(token, tempFirstName, tempLastName));
+        setEditMode(false);
+    };
+
+const displayFirstName = profile?.firstName || tempFirstName;
+const displayLastName = profile?.lastName || tempLastName;
+
+
+    return (
+        &lt;Main>
+            &lt;Header>&lt;h1>Welcome back&lt;/h1>
+                {(profile) &amp;&amp; (
+                    editMode ? (
+                    &lt;EditMode>
+                        &lt;FieldWrapper>
+                            &lt;input 
+                                value={tempFirstName}
+                                placeholder={profile.firstName || ""}
+                                onChange={(e) => setTempFirstName(e.target.value)}
+                            
+                            />
+                            &lt;ButtonEditLeft onClick={handleSaveClick}>Save&lt;/ButtonEditLeft>
+                            &lt;/FieldWrapper>
+                            &lt;FieldWrapper>&lt;input 
+                                value={tempLastName}
+                                onChange={(e) => setTempLastName(e.target.value)}
+                                placeholder={profile.lastName || ""}
+                            />
+                            &lt;ButtonEditRight onClick={handleEditClick}>Cancel&lt;/ButtonEditRight>
+                            &lt;/FieldWrapper>
+                            &lt;/EditMode>
+                    ) : (
+                        &lt;>
+                            &lt;h1>{displayFirstName + " " + displayLastName}!&lt;/h1>        
+                            &lt;EditButton onClick={handleEditClick}>
+                            Edit Name
+                            &lt;/EditButton>
+                        &lt;/>
+                    )
+                )}
+            &lt;/Header>
+        &lt;Solde accountTitle = "Argent Bank Checking (x8349)" accountAmount = "$2,082.79" accountAmountDescription = "Available Balance"/>
+        &lt;Solde accountTitle = "Argent Bank Savings (x6712)" accountAmount = "$10,928.42" accountAmountDescription = "Available Balance"/>
+        &lt;Solde accountTitle = "Argent Bank Credit Card (x8349)" accountAmount = "$184.30" accountAmountDescription = "Available Balance"/>
+        &lt;Modal show={showErrorModal} onClose={() => setShowErrorModal(false)}>
+                    &lt;h2>Error&lt;/h2>
+                    &lt;p>{errorMessage}&lt;/p>
+                    &lt;Button onClick={() => setShowErrorModal(false)}>Close&lt;/Button>
+                &lt;/Modal>
+        &lt;/Main>
+    );
+}
+
+export default Dashboard;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-ActionCreators.html">ActionCreators</a></li><li><a href="module-EntryPoint.html">EntryPoint</a></li><li><a href="module-InputValidators.html">InputValidators</a></li><li><a href="module-Store.html">Store</a></li></ul><h3>Namespaces</h3><ul><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AppComponent">AppComponent</a></li><li><a href="global.html#apiInstanceHandler">apiInstanceHandler</a></li><li><a href="global.html#authReducer">authReducer</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#rootReducer">rootReducer</a></li><li><a href="global.html#useLocalStorage">useLocalStorage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Nov 12 2023 00:49:26 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

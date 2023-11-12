@@ -33,12 +33,31 @@ margin: 0;
 }
 `;
 
+/**
+ * @namespace UI
+ */
 
+/**
+ * The root component of the application.
+ *
+ * `App` is responsible for initializing the application, including fetching user profiles
+ * if a token is available. It sets up the global styles, header, routing, and footer of the application.
+ * It also handles the display of the Loader component based on the global loading state.
+ *
+ * @name AppComponent
+ * @component
+ * @example
+ * return (
+ *   <App />
+ * )
+ */
   function App() {
     const dispatch = useDispatch();
     const token = useSelector(state => state.authentification.tokenInfos);
     const isLoading = useSelector(state => state.authentification.isLoading);
-  
+    /**
+     * Effect to fetch user profile based on the presence of a token.
+     */
     useEffect(() => {
       if (token) {
         dispatch(fetchProfil(token));

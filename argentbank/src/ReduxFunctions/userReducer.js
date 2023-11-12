@@ -1,6 +1,9 @@
 import { LOGIN_SUCCESS, LOGIN_FAILURE, TOKEN_INFOS, GET_ACCOUNTS, LOGOUT, UPDATE_PROFILE_FAILURE, UPDATE_PROFILE_SUCCESS, ERROR_MESSAGE, IS_LOADING} from './actionTypes';
 
 
+/**
+ * Initial state for the authentication reducer.
+ */
 const initialState = {
     user: null,
     error: null,
@@ -9,6 +12,14 @@ const initialState = {
     isLoading: false,
 };
 
+/**
+ * Reducer for handling authentication and user information actions.
+ * @function
+ * @name authReducer
+ * @param {object} state - The current state of the authentication related data.
+ * @param {object} action - The action dispatched to the reducer.
+ * @returns {object} The updated state after applying the action.
+ */
 export const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN_SUCCESS:

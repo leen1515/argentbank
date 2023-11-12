@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Header.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Header.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import styled from 'styled-components';
+import argentBankLogo from '../img/argentBankLogo.png';
+import userCircleIcon from '../icones/user-circle.svg';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../ReduxFunctions/userActions';
+import { useSelector } from 'react-redux';
+import arrowRight from '../icones/arrow-right.svg';
+import useLocalStorage from '../customhooks/useLocalStorage';
+
+const MainNav = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 20px;
+`;
+
+const NavItem = styled(Link)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  text-decoration: none;
+  margin-right: 0.5rem;
+`;
+
+const NavLogo = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const LogoImage = styled.img`
+  max-width: 100%;
+  width: 200px;
+`;
+
+const UserIcon = styled.img`
+`;
+const UserSignOut = styled.img`
+width:20px;
+height:20px;
+`;
+
+const SignIn = styled(NavItem)`
+  display: flex;
+  align-items: center;
+`;
+const LinkDashboard = styled(NavItem)`
+  display: flex;
+  flex-direction: row;
+  right:0px;
+  width:80%;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  font-weight: bold;
+  color: #000000;
+  text-decoration: none;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  &amp;:hover {
+    text-decoration: underline;
+  }
+`;
+const SignOut = styled(NavItem)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap:nowrap;
+  white-space: nowrap;
+  gap: 0.5rem;
+  font-weight: bold;
+  color: #000000;
+  text-decoration: none;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  &amp;:hover {
+    text-decoration: underline;
+  }
+`;
+
+/**
+ * Main navigation header of the application.
+ *
+ * component for displaying the navigation bar, which includes
+ * the application's logo, user dashboard links, and sign-in/sign-out functionality.
+ * It uses Redux for state management.
+ *
+ * @name MainNavigationHeader
+ * @memberof UI
+ * @component
+ * @example
+ * return (
+ *  &lt;Header />
+ * )
+**/
+
+function Header() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.authentification.accounts);
+
+  const [, , removeUserCredentials] = useLocalStorage('userCredentials', {
+    email: '',
+    token: null,
+    userData: null
+});
+
+/**
+   * Handles user logout.
+   * Clears user credentials from local storage and dispatches a logout action.
+   *
+   * @name LogoutHandler
+   * @memberof UI.MainNavigationHeader
+   * @function
+   */
+const handleLogout = () => {
+    removeUserCredentials();
+    dispatch(logout());
+};
+  return (
+    &lt;MainNav>
+        &lt;NavLogo>
+      &lt;Link to="/" style={{ textDecoration: 'none' }}>
+          &lt;LogoImage src={argentBankLogo} alt="Argent Bank Logo" />
+      &lt;/Link>
+    &lt;/NavLogo>
+
+
+        {user ? (
+      &lt;>
+          &lt;LinkDashboard to="/dashboard">
+              &lt;UserIcon src={userCircleIcon} alt="User Icon" />
+              {user.firstName}
+          &lt;/LinkDashboard>
+          &lt;SignOut to="/login" onClick={handleLogout}>
+              &lt;UserSignOut src={arrowRight} alt="Sign Out Icon" />
+              Sign Out
+          &lt;/SignOut>
+      &lt;/>
+  ) : (
+      &lt;SignIn to="/login">
+          &lt;UserIcon src={userCircleIcon} alt="User Icon" />
+          Sign In
+      &lt;/SignIn>
+  )
+  }
+
+    &lt;/MainNav>
+  );
+}
+
+export default Header;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-ActionCreators.html">ActionCreators</a></li><li><a href="module-EntryPoint.html">EntryPoint</a></li><li><a href="module-InputValidators.html">InputValidators</a></li><li><a href="module-Store.html">Store</a></li></ul><h3>Namespaces</h3><ul><li><a href="UI.html">UI</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AppComponent">AppComponent</a></li><li><a href="global.html#apiInstanceHandler">apiInstanceHandler</a></li><li><a href="global.html#authReducer">authReducer</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#rootReducer">rootReducer</a></li><li><a href="global.html#useLocalStorage">useLocalStorage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Nov 12 2023 00:49:26 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

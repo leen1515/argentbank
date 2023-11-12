@@ -90,6 +90,8 @@ paths:
     put:
       security:
         - Bearer: []
+      tags: 
+        - update transaction's detail
       summary: Update transaction
       parameters:
         - in: header

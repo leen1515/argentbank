@@ -1,4 +1,15 @@
 import { LOGIN_FAILURE, LOGIN_SUCCESS, LOGOUT, TOKEN_INFOS, GET_ACCOUNTS, UPDATE_PROFILE_FAILURE, UPDATE_PROFILE_SUCCESS, ERROR_MESSAGE, IS_LOADING } from "./actionTypes";
+
+/**
+ * Action creators for Redux store.
+ *
+ * for creating actions about to user authentication,
+ * profile updates, and application state management. These actions are dispatched
+ * to the Redux store to update states.
+ *
+ * @module ActionCreators
+ */
+
 export const loginSuccess = (user) => ({
     type: LOGIN_SUCCESS,
     payload: user,

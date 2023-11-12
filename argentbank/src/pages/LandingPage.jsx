@@ -93,6 +93,21 @@ const FeatureItemTitle = styled.h3`
   margin-bottom: 0.5rem;
 `;
 
+/**
+ * Landing page
+ *
+ * This component displays the main promotional features of the Argent Bank. 
+ * There are a hero section, a features section highlighting
+ * various aspects of the bank's services.
+ *
+ * @name LandingPageComponent
+ * @memberof UI
+ * @component
+ * @example
+ * return (
+ *   <LandingPage />
+ * )
+ */
 function LandingPage (){
   return <Main>
       <Hero $bgImage={bankTree}>

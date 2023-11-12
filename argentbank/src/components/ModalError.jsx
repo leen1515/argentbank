@@ -18,6 +18,26 @@ const ModalContent = styled.div`
     text-align: center;
 `;
 
+/**
+ * Modal component.
+ *
+ * Component to display a modal. It can be toggled on and off with the `show` prop.
+ * The `onClose` function prop allows for closing the modal, it is clicked.
+ * Any children passed to this component will be rendered inside the modal content area.
+ *
+ * @name Modal
+ * @memberof UI
+ * @component
+ * @param {boolean} show - Determines if the modal is visible.
+ * @param {function} onClose - Function to call when the modal is requested to close.
+ * @param {React.ReactNode} children - The content to be displayed inside the modal.
+ * @example
+ * return (
+ *   <Modal show={true} onClose={handleClose}>
+ *     <p>Modal Content</p>
+ *   </Modal>
+ * )
+ */
 function Modal({ show, onClose, children }) {
     if (!show) return null;
 

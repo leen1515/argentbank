@@ -71,6 +71,23 @@ const ButtonEditLeft = styled(Button)`
 
     }
 `;
+
+
+/**
+ * Dashboard component, user's profile page.
+ *
+ * Component serves as the main user interface for displaying the user's account information
+ * and allowing the user to edit their name. It uses Redux for state management to handle user profile data
+ * and local component state to manage edit modes and error handling.
+ *
+ * @name DashboardComponent
+ * @memberof UI
+ * @component
+ * @example
+ * return (
+ *   <Dashboard />
+ * )
+ */
 function Dashboard() {
     const dispatch = useDispatch();
     const token = useSelector(state => state.authentification.tokenInfos);
@@ -89,6 +106,9 @@ function Dashboard() {
         }
     }, [profile]);
 
+    /**
+     * Toggles the edit mode for user profile name.
+     */
     const handleEditClick = () => {
         if (tempFirstName === "" && profile) {
             setTempFirstName(profile.firstName);
@@ -98,7 +118,10 @@ function Dashboard() {
         }
         setEditMode(!editMode);
     };
-
+    /**
+     * Saves the updated user profile name.
+     * Performs validation and dispatches update profile action.
+     */
     const handleSaveClick = () => {
         if ((!isValidName(tempFirstName) || !isValidName(tempLastName)) ) {
             const errMsg = "Invalid name. Names can only contain letters, spaces, hyphens, and apostrophes.";
